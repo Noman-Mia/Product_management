@@ -8,11 +8,32 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
  
-public function index()
-{
-    $products = Product::paginate(10);
-    return view('products.index', compact('products'));
-}
+    public function index(Request $request)
+    {
+        // Retrieve search input
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'name'); // Default sorting column is 'name'
+        $direction = $request->input('direction', 'asc'); // Default sorting direction is ascending
+    
+        // Query builder with optional search functionality
+        $query = Product::query();
+    
+        // Apply search filter if a search term is provided
+        if ($search) {
+            $query->where('product_id', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+        }
+    
+        // Apply sorting
+        $query->orderBy($sort, $direction);
+    
+        // Paginate the results
+        $products = $query->paginate(10);
+    
+        // Pass the filtered, sorted, and paginated products to the view
+        return view('products.index', compact('products'));
+    }
+    
 
 public function create()
 {
