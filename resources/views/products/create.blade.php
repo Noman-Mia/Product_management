@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
-    @vite('resources/css/app.css') <!-- Link Tailwind CSS -->
+    @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
     <div class="container mx-auto py-10">
         <h1 class="text-3xl font-bold text-center mb-6">Create New Product</h1>
 
         <div class="bg-white p-6 rounded shadow-md max-w-lg mx-auto">
+            @if ($errors->any())
+                <div class="text-red-500 mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
@@ -22,6 +32,7 @@
                         name="product_id" 
                         id="product_id" 
                         required 
+                        value="{{ old('product_id') }}"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                 </div>
@@ -34,6 +45,7 @@
                         name="name" 
                         id="name" 
                         required 
+                        value="{{ old('name') }}"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                 </div>
@@ -46,7 +58,7 @@
                         id="description" 
                         rows="3" 
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    ></textarea>
+                    >{{ old('description') }}</textarea>
                 </div>
 
                 <!-- Price -->
@@ -58,6 +70,7 @@
                         id="price" 
                         step="0.01" 
                         required 
+                        value="{{ old('price') }}"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                 </div>
@@ -69,6 +82,7 @@
                         type="number" 
                         name="stock" 
                         id="stock" 
+                        value="{{ old('stock') }}"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                 </div>
