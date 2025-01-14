@@ -57,6 +57,7 @@
             <table class="w-full border-collapse border border-gray-300 text-left">
                 <thead>
                     <tr class="bg-gray-200">
+                        <th class="p-3 border border-gray-300">Image</th>
                         <th class="p-3 border border-gray-300">
                             <a href="{{ route('products.index', ['sort' => 'product_id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="hover:underline">
                                 Product ID
@@ -89,13 +90,22 @@
                 <tbody>
                     @forelse ($products as $product)
                         <tr class="hover:bg-gray-100">
+                            <!-- Product Image -->
+                            <td class="p-3 border border-gray-300">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
+                                @else
+                                    <span class="text-gray-500">No Image</span>
+                                @endif
+                            </td>
                             <td class="p-3 border border-gray-300">{{ $product->product_id }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->name }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->description }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->price }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->stock }}</td>
                             <td class="p-3 border border-gray-300">
-                                <a href="{{ route('products.edit', $product->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                                <a href="{{ route('products.show', $product->id) }}" class="text-green-500 hover:underline">Show</a>
+                                <a href="{{ route('products.edit', $product->id) }}" class="text-blue-500 hover:underline ml-2">Edit</a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
@@ -107,10 +117,11 @@
                                     </button>
                                 </form>
                             </td>
+                            
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="p-3 text-center text-gray-500">No products found.</td>
+                            <td colspan="7" class="p-3 text-center text-gray-500">No products found.</td>
                         </tr>
                     @endforelse
                 </tbody>

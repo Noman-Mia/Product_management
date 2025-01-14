@@ -11,7 +11,7 @@
         <h1 class="text-3xl font-bold text-center mb-6">Create New Product</h1>
 
         <div class="bg-white p-6 rounded shadow-md max-w-lg mx-auto">
-            <form action="{{ route('products.store') }}" method="POST" class="space-y-4">
+            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <!-- Product ID -->
@@ -73,13 +73,14 @@
                     >
                 </div>
 
-                <!-- Image URL -->
+                <!-- Image Upload -->
                 <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">Image URL:</label>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Image:</label>
                     <input 
-                        type="text" 
+                        type="file" 
                         name="image" 
                         id="image" 
+                        accept="image/*" 
                         required 
                         class="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
