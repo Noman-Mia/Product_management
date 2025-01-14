@@ -10,8 +10,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'name'); // Default sorting column is 'name'
-        $direction = $request->input('direction', 'asc'); // Default sorting direction is ascending
+        $sort = $request->input('sort', 'name'); 
+        $direction = $request->input('direction', 'asc');
 
         $query = Product::query();
 

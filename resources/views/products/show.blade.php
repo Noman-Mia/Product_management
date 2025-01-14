@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
-    @vite('resources/css/app.css') <!-- Link Tailwind CSS -->
+    @vite('resources/css/app.css') 
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
     <div class="container mx-auto py-10">

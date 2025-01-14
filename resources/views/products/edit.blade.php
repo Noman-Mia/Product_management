@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
-    @vite('resources/css/app.css') <!-- Link to Tailwind CSS -->
+    @vite('resources/css/app.css') 
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
     <div class="max-w-2xl mx-auto mt-10 bg-white p-6 shadow-md rounded-md">
