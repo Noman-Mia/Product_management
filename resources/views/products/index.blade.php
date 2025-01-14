@@ -57,7 +57,6 @@
             <table class="w-full border-collapse border border-gray-300 text-left">
                 <thead>
                     <tr class="bg-gray-200">
-                        <th class="p-3 border border-gray-300">Image</th>
                         <th class="p-3 border border-gray-300">
                             <a href="{{ route('products.index', ['sort' => 'product_id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="hover:underline">
                                 Product ID
@@ -66,22 +65,31 @@
                                 @endif
                             </a>
                         </th>
+                        <th class="p-3 border border-gray-300">Image</th>
                         <th class="p-3 border border-gray-300">
-                            <a href="{{ route('products.index', ['sort' => 'name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="hover:underline">
-                                Name
-                                @if (request('sort') === 'name')
-                                    {{ request('direction') === 'asc' ? '↑' : '↓' }}
-                                @endif
-                            </a>
+                            Name
+                            @if (request('sort') === 'name')
+                                {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                            @else
+                                <form action="{{ route('products.index') }}" method="GET" class="inline">
+                                    <input type="hidden" name="sort" value="name">
+                                    <input type="hidden" name="direction" value="asc">
+                                    <button type="submit" class="text-blue-500 hover:underline">Sort</button>
+                                </form>
+                            @endif
                         </th>
                         <th class="p-3 border border-gray-300">Description</th>
                         <th class="p-3 border border-gray-300">
-                            <a href="{{ route('products.index', ['sort' => 'price', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="hover:underline">
-                                Price
-                                @if (request('sort') === 'price')
-                                    {{ request('direction') === 'asc' ? '↑' : '↓' }}
-                                @endif
-                            </a>
+                            Price
+                            @if (request('sort') === 'price')
+                                {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                            @else
+                                <form action="{{ route('products.index') }}" method="GET" class="inline">
+                                    <input type="hidden" name="sort" value="price">
+                                    <input type="hidden" name="direction" value="asc">
+                                    <button type="submit" class="text-blue-500 hover:underline">Sort</button>
+                                </form>
+                            @endif
                         </th>
                         <th class="p-3 border border-gray-300">Stock</th>
                         <th class="p-3 border border-gray-300">Actions</th>
@@ -90,7 +98,7 @@
                 <tbody>
                     @forelse ($products as $product)
                         <tr class="hover:bg-gray-100">
-                            <!-- Product Image -->
+                            <td class="p-3 border border-gray-300">{{ $product->product_id }}</td>
                             <td class="p-3 border border-gray-300">
                                 @if ($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
@@ -98,26 +106,30 @@
                                     <span class="text-gray-500">No Image</span>
                                 @endif
                             </td>
-                            <td class="p-3 border border-gray-300">{{ $product->product_id }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->name }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->description }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->price }}</td>
                             <td class="p-3 border border-gray-300">{{ $product->stock }}</td>
-                            <td class="p-3 border border-gray-300">
-                                <a href="{{ route('products.show', $product->id) }}" class="text-green-500 hover:underline">Show</a>
-                                <a href="{{ route('products.edit', $product->id) }}" class="text-blue-500 hover:underline ml-2">Edit</a>
+
+                            <td class="p-3 border border-gray-300 flex items-center gap-2">
+                                <a href="{{ route('products.show', $product->id) }}" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
+                                    Show
+                                </a>
+                                <a href="{{ route('products.edit', $product->id) }}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                                    Edit
+                                </a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button 
                                         type="submit" 
-                                        class="text-red-500 hover:underline ml-2"
+                                        class="bg-red-500 text-red-500"
+                                        onclick="return confirm('Are you sure you want to delete this product?')"
                                     >
                                         Delete
                                     </button>
                                 </form>
                             </td>
-                            
                         </tr>
                     @empty
                         <tr>
