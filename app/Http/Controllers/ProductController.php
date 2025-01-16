@@ -9,22 +9,29 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+       
         $search = $request->input('search');
         $sort = $request->input('sort', 'name'); 
-        $direction = $request->input('direction', 'asc');
-
+        $direction = $request->input('direction', 'asc'); 
+    
         $query = Product::query();
-
+    
+      
         if ($search) {
-            $query->where('product_id', 'like', '%' . $search . '%')
-                  ->orWhere('description', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('product_id', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhere('name', 'like', '%' . $search . '%')
+                  ->orWhere('price', 'like', '%' . $search . '%');
+            });
         }
-
+    
         $query->orderBy($sort, $direction);
+    
         $products = $query->paginate(10);
-
         return view('products.index', compact('products'));
     }
+    
 
     public function create()
     {
